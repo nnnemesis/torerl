@@ -2,6 +2,15 @@
 -compile(export_all).
 
 %% TESTS
+run_all_tests()->
+	test_numbers(),
+	test_bytestrings(),
+	test_lists(),
+	test_dicts(),
+	test_all(),
+	test_on_file1(),
+	test_on_file2().
+
 test_numbers()->
 	[] = bencoder:decode(<<>>),
 	[{number, 0}] = bencoder:decode(<<"i0e">>),

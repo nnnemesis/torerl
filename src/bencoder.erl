@@ -1,15 +1,17 @@
 -module(bencoder).
--export([decode/1, test_numbers/0
-	,test_bytestrings/0, test_all/0, test_lists/0
-	,test_dicts/0]).
+-export([decode/1]).
 	
 %%EXPORT
+%%DECODE
 decode(FileData) when is_bitstring(FileData) ->
 	{Terms, <<>>} = dec(FileData, []),
 	lists:reverse(Terms).
+%%DECODE	
 %%EXPORT
 	
 %%INTERNAL
+
+%%PARSE
 dec(<<>>, Acc)->
 	{Acc, <<>>};
 dec(<<"e", Rest/binary>>, Acc)->
@@ -42,11 +44,9 @@ dec_bytestring(Rest)->
 	{_Token, _Rest2} = dec_bytestring_content(Rest1,Length).
 	
 dec_bytestring_content(Source, LengthInBytes)->
-	io:format("LengthInBytes ~p~n", [LengthInBytes]),
 	LengthInBites = LengthInBytes * 8,
 	<<Content:LengthInBites, Rest/binary>> = Source,
-	io:format("Content ~p~n", [Content]),
-	{{bytestring, LengthInBytes, <<Content:LengthInBites>>}, Rest}.
+	{bencode:make_bytestring(<<Content:LengthInBites>>, LengthInBytes), Rest}.
 	
 dec_bytestring_length(<<"0", Rest/binary>>, Acc)->
 	dec_bytestring_length(Rest, <<Acc/binary,"0">>);
@@ -71,9 +71,7 @@ dec_bytestring_length(<<"9", Rest/binary>>, Acc)->
 dec_bytestring_length(<<":", Rest/binary>>, Acc)->
 	{{bytestring_length, list_to_integer(binary_to_list(Acc))}, Rest};
 dec_bytestring_length(<<_Any:8, _Rest/binary>>, _Acc)->
-	throw(bytestring_length_decode_error).
-	
-	
+	throw(bytestring_length_decode_error).	
 	
 dec_number(<<"-", Rest/binary>>,<<>>)->
 	dec_number(Rest, <<"-">>);
@@ -101,4 +99,4 @@ dec_number(<<"e", Rest/binary>>,Acc)->
 	{{number, list_to_integer(binary_to_list(Acc))}, Rest};
 dec_number(<<_Any:8, _Rest/binary>>, _Acc)->
 	throw(number_decode_error).
-	
+%%PARSE
