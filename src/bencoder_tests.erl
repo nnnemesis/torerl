@@ -9,7 +9,8 @@ run_all_tests()->
 	test_dicts(),
 	test_all(),
 	test_on_file1(),
-	test_on_file2().
+	test_on_file2(),
+	ok.
 
 test_numbers()->
 	[] = bencoder:decode(<<>>),
@@ -42,11 +43,13 @@ test_all()->
 test_on_file1()->
 	{ok, Binary} = file:read_file("zaplutavshie.torrent"),
 	Res = bencoder:decode(Binary),
-	io:format("Res ~n~p~n", [Res]).
+	%io:format("Res ~n~p~n", [Res]),
+	ok.
 	
 test_on_file2()->
 	{ok, Binary} = file:read_file("agents.torrent"),
 	Res = bencoder:decode(Binary),
-	io:format("Res ~n~p~n", [Res]).
+	%io:format("Res ~n~p~n", [Res]),
+	ok.
 	
 %% TESTS

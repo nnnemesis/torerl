@@ -46,7 +46,7 @@ dec_bytestring(Rest)->
 dec_bytestring_content(Source, LengthInBytes)->
 	LengthInBites = LengthInBytes * 8,
 	<<Content:LengthInBites, Rest/binary>> = Source,
-	{bencode:make_bytestring(<<Content:LengthInBites>>, LengthInBytes), Rest}.
+	{bencode_utils:make_bytestring(<<Content:LengthInBites>>, LengthInBytes), Rest}.
 	
 dec_bytestring_length(<<"0", Rest/binary>>, Acc)->
 	dec_bytestring_length(Rest, <<Acc/binary,"0">>);
