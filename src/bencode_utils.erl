@@ -23,7 +23,7 @@ dict_find_by_key(Key, {dict, Content}) when is_bitstring(Key)->
 dict_find_by_key(_Key, [])->
 	not_found;
 dict_find_by_key(K, [K|[Value|_T]])->
-	{ok, get_simple_presintation(Value)};
+	{ok, Value};
 dict_find_by_key(Key, [_H|[_V|T]])->
 	dict_find_by_key(Key, T).
 %%FIND

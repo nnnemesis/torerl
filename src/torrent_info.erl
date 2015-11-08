@@ -1,9 +1,20 @@
 -module(torrent_info).
--export([get_announce/1]).
+-export([get_announce/1, get_announce_list/1, get_files/1]).
 
 %%export
 get_announce(Dict) ->
-	bencode_utils:dict_find_by_key(<<"announce">>, Dict).	
+	{ok, Value} = bencode_utils:dict_find_by_key(<<"announce">>, Dict),
+	bencode_utils:get_simple_presintation(Value).
+	
+get_announce_list(Dict) ->
+	{ok, Value} = bencode_utils:dict_find_by_key(<<"announce-list">>, Dict),
+	bencode_utils:get_simple_presintation(Value).
+
+get_files(Dict) ->
+	{ok, InfoDict} = bencode_utils:dict_find_by_key(<<"info">>, Dict),
+	{ok, FileList} = bencode_utils:dict_find_by_key(<<"files">>, InfoDict),
+	bencode_utils:get_simple_presintation(FileList).
+	
 %%export
 	
 %%internal

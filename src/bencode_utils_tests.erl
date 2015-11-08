@@ -26,4 +26,4 @@ test_dict_find()->
 				[{bytestring,8,<<"announce">>},
 				{bytestring,23,<<"udp://bt.rutor.org:2710">>}]
 			},
-	{ok, <<"udp://bt.rutor.org:2710">>} = bencode_utils:dict_find_by_key(<<"announce">>, Dict).
+	{ok, {bytestring,23,<<"udp://bt.rutor.org:2710">>}} = bencode_utils:dict_find_by_key(<<"announce">>, Dict).
