@@ -1,5 +1,6 @@
 -module(torrent_info).
--export([get_announce/1, get_announce_list/1, get_files/1]).
+-export([get_announce/1, get_announce_list/1, get_files/1
+	,get_info_sha1/1]).
 
 %%export
 get_announce(Dict) ->
@@ -14,6 +15,11 @@ get_files(Dict) ->
 	{ok, InfoDict} = bencode_utils:dict_find_by_key(<<"info">>, Dict),
 	{ok, FileList} = bencode_utils:dict_find_by_key(<<"files">>, InfoDict),
 	bencode_utils:get_simple_presintation(FileList).
+
+get_info_sha1(Dict)->
+	{ok, InfoDict} = bencode_utils:dict_find_by_key(<<"info">>, Dict),
+	Binary = bencoder:encode(InfoDict),
+	_Hash = crypto:hash(sha, Binary).
 	
 %%export
 	

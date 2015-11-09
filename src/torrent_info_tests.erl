@@ -4,6 +4,7 @@
 run_all_tests()->
 	test_torrent_info1(),
 	test_torrent_info2(),
+	test_info_sha1_1(),
 	ok.
 
 test_torrent_info1()->
@@ -35,3 +36,13 @@ test_torrent_info2()->
                                 209,139,46,32,208,151,208,176,208,191,
                                 208,187,209,131,209,130,208,176,208,178,
                                 209,136,208,184,208,181,46,102,98,50>>]]] = torrent_info:get_files(Dict).
+								
+test_info_sha1_1()->
+	{ok, Binary} = file:read_file("zaplutavshie.torrent"),
+	[Dict] = bencoder:decode(Binary),
+	Hash = torrent_info:get_info_sha1(Dict),
+	HexHash = bencode_utils:binary_to_hex_binary(Hash),
+	%io:format("Hash ~p~n",[HexHash]),
+	<<"2b8919d776b0e5130647bc73dbb87ff58271eb12">> = HexHash,
+	<<43,137,25,215,118,176,229,19,6,71,188,115,219,184,127,245,130,113,235,18>> = Hash.
+	

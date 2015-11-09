@@ -1,6 +1,6 @@
 -module(bencode_utils).
 -export([dict_find_by_key/2, make_bytestring/1, make_bytestring/2
-			, get_simple_presintation/1, reverse_binary/1]).
+			, get_simple_presintation/1, reverse_binary/1, binary_to_hex_binary/1]).
 
 %%ONLY INTERNAL USE
 get_simple_presintation({bytestring, _Size, Content})->
@@ -41,3 +41,12 @@ reverse_binary(Binary) when is_binary(Binary) ->
 	S = bit_size(Binary),  
 	<<X:S/integer-little>>=Binary, 
 	<<X:S/integer-big>>.
+%%REVERSE
+	
+%%BINARY TO HEX BINARY STRING
+binary_to_hex_binary(Bin) when is_binary(Bin) ->
+    << <<(hex_symbol(H)),(hex_symbol(L))>> || <<H:4,L:4>> <= Bin >>.
+
+hex_symbol(C) when C < 10 -> $0 + C;
+hex_symbol(C) -> $a + C - 10.
+%%BINARY TO HEX STRING

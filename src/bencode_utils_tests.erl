@@ -6,6 +6,7 @@ run_all_tests()->
 	test_simple_presintation(),
 	test_dict_find(),
 	test_reverse(),
+	test_bin_to_hex_bin(),
 	ok.
 
 test_makes()->
@@ -31,3 +32,8 @@ test_dict_find()->
 	
 test_reverse()->
 	<<"dcba">> = bencode_utils:reverse_binary(<<"abcd">>).
+	
+test_bin_to_hex_bin()->
+	<<"17">> = bencode_utils:binary_to_hex_binary(<<23>>),
+	<<"ff">> = bencode_utils:binary_to_hex_binary(<<255>>),
+	<<"fffe">> = bencode_utils:binary_to_hex_binary(<<255, 254>>).
