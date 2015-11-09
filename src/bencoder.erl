@@ -1,15 +1,47 @@
 -module(bencoder).
--export([decode/1]).
+-export([decode/1, encode/1]).
 	
 %%EXPORT
 %%DECODE
-decode(FileData) when is_bitstring(FileData) ->
+decode(FileData) when is_binary(FileData) ->
 	{Terms, <<>>} = dec(FileData, []),
 	lists:reverse(Terms).
-%%DECODE	
+%%DECODE
+%%ENCODE
+encode(BencodeTerm)->
+	encode(BencodeTerm, <<>>).
+%%ENCODE
 %%EXPORT
 	
 %%INTERNAL
+%%TO_BINARY
+encode([], Acc)->
+	Acc;
+encode([H|T], Acc)->
+	encode(T, encode(H, Acc));
+encode({number, N}, Acc)->
+	Res = case N < 0 of
+		true -> 
+			BN = integer_to_binary(0-N),
+			<<"i-", BN/binary, "e">>;
+		false -> 
+			BN = integer_to_binary(N),
+			<<"i", BN/binary, "e">>
+	end,
+	<<Acc/binary, Res/binary>>;
+encode({list, Content}, Acc)->
+	InternalAcc = encode(Content, <<>>),
+	<<Acc/binary, "l", InternalAcc/binary, "e">>;
+encode({dict, Content}, Acc)->
+	InternalAcc = encode(Content, <<>>),
+	<<Acc/binary, "d", InternalAcc/binary, "e">>;
+encode({bytestring, SizeInBytes, Content}, Acc)->
+	BN = integer_to_binary(SizeInBytes),
+	<<Acc/binary, BN/binary, ":", Content/binary>>;
+encode(_Any, _Acc)->
+	throw(encode_error).
+	
+%%TO_BINARY
 
 %%PARSE
 dec(<<>>, Acc)->

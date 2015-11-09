@@ -10,6 +10,10 @@ run_all_tests()->
 	test_all(),
 	test_on_file1(),
 	test_on_file2(),
+	test_number_encode(),
+	test_bytestring_encode(),
+	test_list_encode(),
+	test_dict_encode(),
 	ok.
 
 test_numbers()->
@@ -53,3 +57,17 @@ test_on_file2()->
 	ok.
 	
 %% TESTS
+
+test_number_encode()->
+	<<"i0e">> = bencoder:encode({number, 0}),
+	<<"i123e">> = bencoder:encode({number, 123}),
+	<<"i-123e">> = bencoder:encode({number, -123}).
+
+test_bytestring_encode()->
+	<<"4:spam">> = bencoder:encode({bytestring, 4, <<"spam">>}).
+	
+test_list_encode()->
+	<<"li0ei123ee">> = bencoder:encode({list, [{number, 0}, {number, 123}]}).
+	
+test_dict_encode()->
+	<<"d4:spami123ee">> = bencoder:encode({dict, [{bytestring, 4, <<"spam">>}, {number, 123}]}).

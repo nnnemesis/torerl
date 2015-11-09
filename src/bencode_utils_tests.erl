@@ -5,6 +5,7 @@ run_all_tests()->
 	test_makes(),
 	test_simple_presintation(),
 	test_dict_find(),
+	test_reverse(),
 	ok.
 
 test_makes()->
@@ -27,3 +28,6 @@ test_dict_find()->
 				{bytestring,23,<<"udp://bt.rutor.org:2710">>}]
 			},
 	{ok, {bytestring,23,<<"udp://bt.rutor.org:2710">>}} = bencode_utils:dict_find_by_key(<<"announce">>, Dict).
+	
+test_reverse()->
+	<<"dcba">> = bencode_utils:reverse_binary(<<"abcd">>).
