@@ -11,7 +11,7 @@ ok = file:delete("tracker.beam").
 ok = file:delete("tracker_tests.beam").
 ok = file:delete("tracker_utils.beam").
 ok = file:delete("tracker_utils_tests.beam").
-
+ok = file:delete("udp_announce.beam").
 
 {ok,bencode_utils} = c(bencode_utils).
 {ok,bencode_utils_tests} = c(bencode_utils_tests).
@@ -23,7 +23,9 @@ ok = file:delete("tracker_utils_tests.beam").
 {ok, tracker_tests} = c(tracker_tests).
 {ok, tracker_utils} = c(tracker_utils).
 {ok, tracker_utils_tests} = c(tracker_utils_tests).
+{ok, udp_announce} = c(udp_announce).
 
+tracker_tests:test_get_udp_announce().
 
 ok = bencode_utils_tests:run_all_tests().
 ok = bencoder_tests:run_all_tests().

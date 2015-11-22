@@ -24,14 +24,14 @@ get_info_sha1(Dict)->
 get_total_length(Dict)->
 	{ok, InfoDict} = bencode_utils:dict_find_by_key(<<"info">>, Dict),
 	{ok, FileList} = bencode_utils:dict_find_by_key(<<"files">>, InfoDict),
-	io:format("FileList ~p~n", [FileList]),
+	%io:format("FileList ~p~n", [FileList]),
 	get_files_length(
 		bencode_utils:get_simple_presintation_non_rec(FileList), 0).
 	
 get_files_length([FileDict|T], Acc)->
-	io:format("FileDict ~p~n", [FileDict]),
+	%io:format("FileDict ~p~n", [FileDict]),
 	{ok, Length} = bencode_utils:dict_find_by_key(<<"length">>, FileDict),
-	io:format("Length ~p~n", [Length]),
+	%io:format("Length ~p~n", [Length]),
 	get_files_length(T, Acc + 
 		bencode_utils:get_simple_presintation_non_rec(Length));
 get_files_length([], Acc)->
